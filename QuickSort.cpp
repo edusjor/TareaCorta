@@ -1,11 +1,9 @@
-//BubleSort
+//QuickSort.cpp
+
+
+//SelectionSort
 //----------------------------------------------------------------------------
-// Filename: BubbleSort.htm
-// Bubble Sort v1.0
-// by Paul Bladek
-// March 13, 2003
-// compiled using MS Visual C++ 6.0
-// An Examples of a Bubble Sort
+
 //----------------------------------------------------------------------------
 #include <iostream>
 #include <string>
@@ -21,7 +19,11 @@ using namespace std;
 template <class T>
 void printArray(T ar[], int sz);
 template <class T>
-void bubbleSort(T ar[], int sz);
+void swap(T* val1, T* val2);
+template <class T>
+int partition(T arr[], int low, int high);
+template <class T>
+void quicksort(T arr[], int low, int high);
 int numeroAleatorio(int);
 void CrearArchivo();
 void guardar(double arraySegundos[], int arrayElementos[]);
@@ -60,9 +62,11 @@ int main()
 		// test array
 		//cout << "Unsorted array:" << endl;
 	  	//printArray(sa, SIZE);
+	  	int minim=0;
 
 	  	tiempo_inicio = clock();
-		bubbleSort(sa,qElem);
+	
+		quicksort(sa, minim, qElem);
 		tiempo_final = clock();
 
        	//cout << "Sorted array:" << endl;
@@ -95,7 +99,7 @@ void CrearArchivo()
 {
 
 	FILE *archivo;
-	archivo = fopen("GraficaBubbleSort.csv","wt");
+	archivo = fopen("GraficaQuickSort.csv","wt");
 
 	if (archivo!=NULL){
 		printf("\nEl archivo se creo correctamente\n");
@@ -109,16 +113,16 @@ void CrearArchivo()
 
 void guardar(double arraySegundos[], int arrayElementos[]){
 	ofstream archivo;
-	archivo.open("GraficaBubbleSort.csv",ios::out);
+	archivo.open("GraficaQuickSort.csv",ios::out);
 
 	if (archivo.fail()){
 		cout<<"No se pudo abrir el archivo"<<endl;
 		exit(1);
 	}
 	
-	int cont=0;
-	while (1){              		//recorre el array y cuando encuentra aun 0 es que ya recorrio todo
-		if(arrayElementos[cont]==0)//y entonces el contador actual sera la cantidad de elmementos en el array
+	int cont=0;   
+	while (1){          			//recorre el array y cuando encuentra aun 0 es que ya recorrio todo
+		if(arrayElementos[cont]==0) //y entonces el contador actual sera la cantidad de elmementos en el array
 			break;
 		cont+=1;
 	}
@@ -148,22 +152,42 @@ void printArray(T array[], int size)
 // sorts array of size size by Bubble Sort method
 //----------------------------------------------------------------------------
 template <class T>
-void bubbleSort(T array[], int size)
+void swap(T* val1, T* val2)
 {
-
-  bool noChange = true; // stop when a pass causes no change
-  for(int i = size; i > 0; i--)
-  {
-    noChange = true;
-    for(int j = 1; j < i; j++)
-    {
-      if(array[j] < array[j - 1])
-      {
-        swap(array[j], array[j-1]);
-        noChange = false;
-      } // end if
-    } // end for(j)
-    if (noChange)
-      return; // sorted--no need to continue
-  } // end for(i) 
+	int temp;
+	temp = *val1;
+	*val1 = *val2;
+	*val2 = temp;
 }
+
+template <class T>
+int partition(T arr[], int low, int high)
+{
+	int i = low-1, j = low;
+	int key = arr[high];
+
+	while(j < high)
+	{
+		if(arr[j] <= key)
+		{
+			i++;
+			if(i!=j)
+			swap(&arr[i], &arr[j]);
+		}
+		j++;
+	}
+	swap(&arr[i+1], &arr[high]);	
+	return i+1;
+}
+
+template <class T>
+void quicksort(T arr[], int low, int high)
+{
+	int part;
+	if(low < high)
+	{
+		part = partition(arr, low, high);
+		quicksort(arr, low, part-1);
+		quicksort(arr, part+1, high);
+	}
+ }

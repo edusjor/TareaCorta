@@ -1,11 +1,7 @@
-//BubleSort
+//InsertionSort.cpp
+
 //----------------------------------------------------------------------------
-// Filename: BubbleSort.htm
-// Bubble Sort v1.0
-// by Paul Bladek
-// March 13, 2003
-// compiled using MS Visual C++ 6.0
-// An Examples of a Bubble Sort
+
 //----------------------------------------------------------------------------
 #include <iostream>
 #include <string>
@@ -21,7 +17,7 @@ using namespace std;
 template <class T>
 void printArray(T ar[], int sz);
 template <class T>
-void bubbleSort(T ar[], int sz);
+void insertionSort(T arr[], int size);
 int numeroAleatorio(int);
 void CrearArchivo();
 void guardar(double arraySegundos[], int arrayElementos[]);
@@ -62,7 +58,7 @@ int main()
 	  	//printArray(sa, SIZE);
 
 	  	tiempo_inicio = clock();
-		bubbleSort(sa,qElem);
+		insertionSort(sa,qElem);
 		tiempo_final = clock();
 
        	//cout << "Sorted array:" << endl;
@@ -95,7 +91,7 @@ void CrearArchivo()
 {
 
 	FILE *archivo;
-	archivo = fopen("GraficaBubbleSort.csv","wt");
+	archivo = fopen("GraficaInsertionSort.csv","wt");
 
 	if (archivo!=NULL){
 		printf("\nEl archivo se creo correctamente\n");
@@ -109,16 +105,16 @@ void CrearArchivo()
 
 void guardar(double arraySegundos[], int arrayElementos[]){
 	ofstream archivo;
-	archivo.open("GraficaBubbleSort.csv",ios::out);
+	archivo.open("GraficaInsertionSort.csv",ios::out);
 
 	if (archivo.fail()){
 		cout<<"No se pudo abrir el archivo"<<endl;
 		exit(1);
 	}
 	
-	int cont=0;
-	while (1){              		//recorre el array y cuando encuentra aun 0 es que ya recorrio todo
-		if(arrayElementos[cont]==0)//y entonces el contador actual sera la cantidad de elmementos en el array
+	int cont=0;   
+	while (1){          			//recorre el array y cuando encuentra aun 0 es que ya recorrio todo
+		if(arrayElementos[cont]==0) //y entonces el contador actual sera la cantidad de elmementos en el array
 			break;
 		cont+=1;
 	}
@@ -148,22 +144,25 @@ void printArray(T array[], int size)
 // sorts array of size size by Bubble Sort method
 //----------------------------------------------------------------------------
 template <class T>
-void bubbleSort(T array[], int size)
-{
-
-  bool noChange = true; // stop when a pass causes no change
-  for(int i = size; i > 0; i--)
-  {
-    noChange = true;
-    for(int j = 1; j < i; j++)
-    {
-      if(array[j] < array[j - 1])
-      {
-        swap(array[j], array[j-1]);
-        noChange = false;
-      } // end if
-    } // end for(j)
-    if (noChange)
-      return; // sorted--no need to continue
-  } // end for(i) 
+void insertionSort(T arr[], int length) {
+      int i, j, tmp;
+      for (i = 1; i < length; i++) {
+            j = i;
+            while (j > 0 && arr[j - 1] > arr[j]) {
+                  tmp = arr[j];
+                  arr[j] = arr[j - 1];
+                  arr[j - 1] = tmp;
+                  j--;
+            }
+      }
 }
+
+
+
+
+
+
+
+
+
+
